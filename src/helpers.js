@@ -1,22 +1,27 @@
-export function sayHello() {
-    return 'Hello!'
-}
+import { ensureServer, setRequest } from "./utils.js";
 
-export function getConfig() {
-    if (typeof __YALIDINE_CONFIG__ === undefined || !__YALIDINE_CONFIG__) {
-        throw new Error(
-            "astro-yalidine: Configuration missing. Did you add yalidine to astro.config.mjs ?"
-        )
+export async function getWilayas(deliverableOnly = true, params = {}) {
+    ensureServer();
+
+    const wilayas = await setRequest({
+        endpoint: 'wilayas',
+        params,
+    });
+
+    if (deliverableOnly) {
+        return wilayas.data
+            .filter(w => w.is_deliverable === 1)
+            .map(w => ({
+                id: w.id,
+                name: w.name,
+                zone: w.zone,
+            }));
     }
-    return __YALIDINE_CONFIG__;
-}
 
-export function checkConfig() {
-    const { apiKey, apiUrl } = getConfig()
-
-    if (!apiUrl) {
-        console.log('something went wrong!')
-    } else {
-        console.log(apiUrl)
-    }
+    return wilayas.data.map(w => ({
+        id: w.id,
+        name: w.name,
+        zone: w.zone,
+        is_deliverable: w.is_deliverable,
+    }));
 }
