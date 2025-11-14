@@ -44,3 +44,7 @@ export async function setRequest({endpoint, method = 'GET', options = {}, params
     
     return await res.json();
 }
+
+export function getIds(options) {
+    return options.id.split(",").map(Number)
+}
