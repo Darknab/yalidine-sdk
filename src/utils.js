@@ -21,7 +21,7 @@ export async function setRequest({endpoint, method = 'GET', options = {}, params
     const { apiId, apiToken, apiUrl } = getConfig();
     const query = new URLSearchParams(params).toString();
     const url = `${apiUrl.replace(/\/$/, '')}/${endpoint.replace(/^\//, '')}${query ? `?${query}` : ""}`;
-
+    console.log(`url: ${url}`)
     const fetchOptions = {
         method,
         headers: { 
