@@ -4,11 +4,11 @@ import { FileCacheAdapter } from "../cache/fileCacheAdapter.js";
 const defaultCache = new FileCacheAdapter();
 const CACHE_TTL = 1000* 60 * 60 *24;
 
-export async function getWilayas(
+export async function getWilayas({
     deliverableOnly = true, 
     params = {},
     cache = defaultCache
-) {
+}) {
     ensureServer();
 
     const isPartial = Boolean(params.id)
@@ -49,22 +49,58 @@ export async function getWilayas(
     }))
 }
 
-export async function getCommunes(
+export async function getCommunes({
+    wilayaId,
     deliverableOnly = true,
-    params = {}
-) {
+    hasStopDesk = false,
+    params = {},
+    cache = defaultCache
+}) {
     ensureServer();
 
-    const response = await setRequest({
-        endpoint: 'communes',
-        params,
-    });
+    const isPartial = Boolean(params.id);
+    const cacheKey = `communes-${wilayaId}`;
+    const cached = await cache.get(cacheKey)
 
-    const communes = response.data
+    let communes;
 
-    if (deliverableOnly) {
-        return communes.filter(c => c.is_deliverable === 1);
+    if (cached) {
+        if (isPartial) {
+            const ids = getIds(params);
+            communes = cached.filter(c => ids.includes(w.id));
+        } else {
+            communes = cached;
+        }
+    } else {
+        const response = await setRequest({
+            endpoint: 'communes',
+            params: {
+                wilaya_id: wilayaId,
+                ...params
+            }
+        });
+
+        communes = response.data;
+
+        if (!isPartial) {
+            await cache.set(cacheKey, communes, CACHE_TTL);
+        }
     }
 
-    return communes;
+    const cleanedDeliverability = deliverableOnly
+        ? communes.filter(c => c.is_deliverable === 1)
+        : communes;
+    
+    
+    const cleaned = hasStopDesk
+        ? cleanedDeliverability.filter(c => c.has_stop_desk === 1)
+        : cleanedDeliverability;
+
+    return cleaned.map( c => ({
+        id: c.id,
+        name: c.name,
+        delivery_time_parcel: c.delivery_time_parcel,
+        ...(deliverableOnly ? {} : { is_deliverable : c.is_deliverable }),
+        ...(hasStopDesk ? {} : { has_stop_desk: c.has_stop_desk })
+    }))   
 }
