@@ -104,3 +104,50 @@ export async function getCommunes({
         ...(hasStopDesk ? {} : { has_stop_desk: c.has_stop_desk })
     }))   
 }
+
+export async function getCenters({
+    wilayaId,
+    params = {},
+    cache = defaultCache
+}) {
+    ensureServer();
+
+    const isPartial = Boolean(params.commune_id)
+    const cacheKey = `centers-${wilayaId}`;
+    const cached = await cache.get(cacheKey);
+
+    let centers
+
+    if (cached) {
+        if (isPartial) {
+            const commune = options.commune_id
+            centers = cached.filter(c => commune === c.commune_id)
+        } else {
+            centers = cached;
+        }
+    } else {
+        const response = await setRequest({
+            endpoint: 'centers',
+            params: {
+                wilaya_id: wilayaId,
+                ...params
+            }
+        });
+
+        centers = response.data;
+
+        if (!isPartial) {
+            await cache.set(cacheKey, centers, CACHE_TTL)
+        }
+    }
+
+    return centers.map( c => ({
+        id: c.center_id,
+        name: c.name,
+        address: c.address,
+        gps: c.gps,
+        commune_id: c.commune_id,
+        commune_name: c.commune_name,
+        wilaya_id: c.wilaya_id
+    }))
+}
