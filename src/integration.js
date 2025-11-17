@@ -7,9 +7,13 @@ export default function yalidineIntegration(options = {}) {
                     vite: {
                         define: {
                             __YALIDINE_CONFIG__: JSON.stringify({
-                                apiId: options.apiId || 'Nothing',
-                                apiToken: options.apiToken || 'Nothing',
-                                apiUrl: options.apiUrl || "https://api.yalidine.com/v1",
+                                apiId: options.apiId ?? null,
+                                apiToken: options.apiToken ?? null,
+                                apiUrl: options.apiUrl ?? "https://api.yalidine.com/v1",
+                                startingCenter: options.startingCenter ?? null,
+                                startingWilaya: options.startingWilaya ?? null,
+                                defaultCache: options.cacheDefault ?? MemoryCacheAdapter,
+                                cacheLifeTime: options.cacheLifeTime ?? 1,
                             }),
                         },
                     },
