@@ -49,7 +49,7 @@ export async function getWilayas({
     }))
 }
 
-export async function getCommunes({
+export async function getCommunesByWilaya({
     wilayaId,
     deliverableOnly = true,
     hasStopDesk = false,
@@ -105,26 +105,24 @@ export async function getCommunes({
     }))   
 }
 
-export async function getCenters({
+export async function getCentersByWilaya({
     wilayaId,
     params = {},
     cache = defaultCache
 }) {
     ensureServer();
 
-    const isPartial = Boolean(params.commune_id)
+    if (!wilayaId) {
+        return console.error('A wilaya Id must be entered to retrieve centers.');
+    }
+
     const cacheKey = `centers-${wilayaId}`;
-    const cached = await cache.get(cacheKey);
+    const cached = await cache.gey(cacheKey);
 
     let centers
 
     if (cached) {
-        if (isPartial) {
-            const commune = options.commune_id
-            centers = cached.filter(c => commune === c.commune_id)
-        } else {
-            centers = cached;
-        }
+        centers = cached;
     } else {
         const response = await setRequest({
             endpoint: 'centers',
@@ -136,9 +134,7 @@ export async function getCenters({
 
         centers = response.data;
 
-        if (!isPartial) {
-            await cache.set(cacheKey, centers, CACHE_TTL)
-        }
+        await cache.set(cacheKey, centers, CACHE_TTL);
     }
 
     return centers.map( c => ({
@@ -149,5 +145,36 @@ export async function getCenters({
         commune_id: c.commune_id,
         commune_name: c.commune_name,
         wilaya_id: c.wilaya_id
-    }))
+    }));
+}
+
+export async function getCentersByCommune({
+    communeId,
+    params = {}
+}) {
+    ensureServer();
+
+    if (!communeId) {
+        return console.error('A wilaya Id must be entered to retrieve centers.');
+    }
+
+    const response = await setRequest({
+        endpoint: 'centers',
+        params: {
+            commune_id: communeId,
+            ...params
+        }
+    });
+
+    const centers = response.data;
+
+    return centers.map( c => ({
+        id: c.center_id,
+        name: c.name,
+        address: c.address,
+        gps: c.gps,
+        commune_id: c.commune_id,
+        commune_name: c.commune_name,
+        wilaya_id: c.wilaya_id
+    }));
 }
