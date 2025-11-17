@@ -1,13 +1,13 @@
 import { ensureServer, setRequest, getIds } from "./utils.js";
 import { getCacheConfig } from "../cache/cacheConfig.js";
 
-const { cache, CACHE_TTL } = getCacheConfig()
-
 export async function getWilayas({
     deliverableOnly = true, 
     params = {},
 }) {
     ensureServer();
+
+    const { cache, CACHE_TTL } = getCacheConfig()
 
     const isPartial = Boolean(params.id)
     const cacheKey = "wilayas";
@@ -55,6 +55,8 @@ export async function getCommunesByWilaya({
 }) {
     ensureServer();
 
+    const { cache, CACHE_TTL } = getCacheConfig()
+
     const isPartial = Boolean(params.id);
     const cacheKey = `communes-${wilayaId}`;
     const cached = await cache.get(cacheKey)
@@ -64,7 +66,7 @@ export async function getCommunesByWilaya({
     if (cached) {
         if (isPartial) {
             const ids = getIds(params);
-            communes = cached.filter(c => ids.includes(w.id));
+            communes = cached.filter(c => ids.includes(c.id));
         } else {
             communes = cached;
         }
@@ -109,11 +111,13 @@ export async function getCentersByWilaya({
     ensureServer();
 
     if (!wilayaId) {
-        return console.error('A wilaya Id must be entered to retrieve centers.');
+        throw new Error('A wilaya Id must be entered to retrieve centers.');
     }
 
+    const { cache, CACHE_TTL } = getCacheConfig()
+
     const cacheKey = `centers-${wilayaId}`;
-    const cached = await cache.gey(cacheKey);
+    const cached = await cache.get(cacheKey);
 
     let centers
 
@@ -151,7 +155,7 @@ export async function getCentersByCommune({
     ensureServer();
 
     if (!communeId) {
-        return console.error('A wilaya Id must be entered to retrieve centers.');
+        throw new Error('A commune Id must be entered to retrieve centers.');
     }
 
     const response = await setRequest({
