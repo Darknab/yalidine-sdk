@@ -1,13 +1,11 @@
 import { ensureServer, setRequest, getIds } from "./utils.js";
-import { FileCacheAdapter } from "../cache/fileCacheAdapter.js";
+import { getCacheConfig } from "../cache/cacheConfig.js";
 
-const defaultCache = new FileCacheAdapter();
-const CACHE_TTL = 1000* 60 * 60 *24;
+const { cache, CACHE_TTL } = getCacheConfig()
 
 export async function getWilayas({
     deliverableOnly = true, 
     params = {},
-    cache = defaultCache
 }) {
     ensureServer();
 
@@ -53,8 +51,7 @@ export async function getCommunesByWilaya({
     wilayaId,
     deliverableOnly = true,
     hasStopDesk = false,
-    params = {},
-    cache = defaultCache
+    params = {}
 }) {
     ensureServer();
 
@@ -107,8 +104,7 @@ export async function getCommunesByWilaya({
 
 export async function getCentersByWilaya({
     wilayaId,
-    params = {},
-    cache = defaultCache
+    params = {}
 }) {
     ensureServer();
 
