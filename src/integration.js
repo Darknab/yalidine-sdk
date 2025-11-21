@@ -12,7 +12,7 @@ export default function yalidineIntegration(options = {}) {
                                 apiUrl: options.apiUrl ?? "https://api.yalidine.com/v1",
                                 startingCenter: options.startingCenter ?? null,
                                 startingWilaya: options.startingWilaya ?? null,
-                                defaultCache: options.cacheDefault ?? MemoryCacheAdapter,
+                                defaultCache: options.cacheDefault ?? 'memory',
                                 cacheLifeTime: options.cacheLifeTime ?? 1,
                             }),
                         },
