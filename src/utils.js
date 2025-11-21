@@ -48,3 +48,11 @@ export async function setRequest({endpoint, method = 'GET', options = {}, params
 export function getIds(options) {
     return options.id.split(",").map(Number)
 }
+
+export function calculateOverWeight(baseFee, overSizeFee, weight) {
+    if (weight <= 5) {
+        return baseFee;
+    } else {
+        return baseFee + (overSizeFee * (weight - 5))
+    }
+}
