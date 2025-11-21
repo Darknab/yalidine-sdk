@@ -1,6 +1,6 @@
-import { getConfig } from "../src/utils";
-import { FileCacheAdapter } from "./fileCacheAdapter";
-import { MemoryCacheAdapter } from "./memoryCacheAdapter";
+import { getConfig } from "../src/utils.js";
+import { FileCacheAdapter } from "./fileCacheAdapter.js";
+import { MemoryCacheAdapter } from "./memoryCacheAdapter.js";
 
 
 export function getCacheConfig() {
