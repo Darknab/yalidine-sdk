@@ -1,4 +1,4 @@
-import { ensureServer, setRequest, getIds, getConfig, calculateOverWeight } from "./utils.js";
+import { ensureServer, setRequest, getIds, getConfig, calculateOverWeight, validateParcels } from "./utils.js";
 import { getCacheConfig } from "../cache/cacheConfig.js";
 
 export async function getWilayas({
@@ -233,4 +233,28 @@ export function calculateBillableWeight(height, width, length, weight) {
     const volumetricWeight = height * width * length * 0.0002;
 
     return weight > volumetricWeight ? weight : volumetricWeight;
+}
+
+export async function createParcels(...parcels) {
+    ensureServer();
+    validateParcels(parcels);
+
+    const data = await setRequest({
+        endpoint: 'parcel',
+        method: 'POST',
+        params: { body: parcels },
+    });
+
+    const succeededParcels = [];
+    const failedParcels = [];
+
+    for (const [orderId, result] of Object.entries(data)) {
+        if (result.success) succeededParcels.push(orderId);
+        else failedParcels.push(orderId);
+    }
+
+    return {
+        data,
+        meta: { succeededParcels, failedParcels },
+    };
 }
