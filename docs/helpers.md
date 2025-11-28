@@ -12,7 +12,8 @@ Most helpers interact with the server API and optionaly use caching. Some helper
 4. [getCentersByCommune](#getcentersbycommune)
 5. [getFees](#getfees)
 6. [calculateBillableWeight](#calculatebillableweight)
-7. [Patterns Summary](#patterns-summary)
+7. [createparcel](#createparcel)
+8. [Patterns Summary](#patterns-summary)
 
 ---
 
@@ -314,6 +315,119 @@ function calculateBillableWeight(height, width, length, weight)
 
 ```js
 const billable = calculateBillableWeight(50, 40, 30, 4); // Returns 4.8 if volumetric > actual
+```
+
+## createParcel
+
+Creates one or multiple parcels in a single API request. Accepts between 1 and 50 parcels, validates them, and returns both the raw API response and a summary of succeeded and failed parcels.
+
+**Signature:**
+
+```js
+async function createParcels(...parcels)
+```
+
+**Parameters:**
+
+- ...parcels (array of objects):
+One or more parcel objects, each containing the fields defined in [parcels specification](./createParcel.md)
+
+Each parcel must include required fields with correct types (string, number, boolean).
+
+**Validation Rules:**
+
+- At least 1 parcel must be provided.
+
+- A maximum of 50 parcels is allowed.
+
+- Required parameters must be present.
+
+**Returns:**
+
+`Promise<Object>` — An object containing both the raw API response and metadata:
+
+```js
+{
+  data: {
+    "<orderId>": {
+      success: boolean,
+      message?: string,
+      tracking?: string,
+      ...otherFields
+    },
+    ...
+  },
+  meta: {
+    succeededParcels: Array<string>, // orderIds that succeeded
+    failedParcels: Array<string>     // orderIds that failed
+  }
+}
+```
+
+**Notes:**
+
+- Parcels are grouped by order ID in the response object.
+
+- Success or failure is determined per parcel.
+
+- Useful for bulk creation during order batching workflows.
+
+- Wrapped calls in try/catch are recommended to handle API issues.
+
+**Example:**
+
+```js
+const parcels = [
+  {
+    order_id: "ORD-2025-001",
+    from_wilaya_name: "Alger",
+    firstname: "Mohamed",
+    familyname: "Bensaid",
+    contact_phone: "0550123456",
+    address: "12 Rue Didouche Mourad",
+    to_commune_name: "Sidi M’Hamed",
+    to_wilaya_name: "Alger",
+    product_list: "Sneakers Nike Air Max",
+    Price: 8500,
+    do_insurance: false,
+    declared_value: 8500,
+    Length: 30,
+    Width: 20,
+    Height: 12,
+    Weight: 1,
+    freeshipping: false,
+    is_stopdesk: false,
+    has_exchange: false,
+    economic: false
+  },
+
+  {
+    order_id: "ORD-2025-002",
+    from_wilaya_name: "Oran",
+    firstname: "Sara",
+    familyname: "Khelifa",
+    contact_phone: "0560789456,021456789",
+    address: "Résidence El Bahia, Bt 18",
+    to_commune_name: "Boumerdes",
+    to_wilaya_name: "Boumerdes",
+    product_list: "Summer Dress + Accessories",
+    Price: 4200,
+    do_insurance: true,
+    declared_value: 4000,
+    Length: 25,
+    Width: 18,
+    Height: 10,
+    Weight: 0.7,
+    freeshipping: true,
+    is_stopdesk: true,
+    stopdesk_id: "SD-BOUM-03",
+    has_exchange: true,
+    product_to_collect: "Wrong size dress",
+    economic: true
+  }
+];
+
+const result = await createParcels(parcels);
 ```
 
 ## Patterns Summary
