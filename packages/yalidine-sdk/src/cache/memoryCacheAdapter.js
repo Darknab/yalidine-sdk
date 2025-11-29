@@ -9,7 +9,7 @@ export class MemoryCacheAdapter extends CacheAdapter {
     async get(key) {
         const entry = this.cache.get(key);
         if (!entry) return null;
-        if (entry.expiry && date.now() > entry.expiry) {
+        if (entry.expiry && Date.now() > entry.expiry) {
             this.cache.delete(key);
             return null
         }
