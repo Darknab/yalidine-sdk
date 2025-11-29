@@ -9,7 +9,7 @@ export function ensureServer() {
 }
 
 export function getConfig() {
-    if (typeof __YALIDINE_CONFIG__ === undefined || !__YALIDINE_CONFIG__) {
+    if (typeof __YALIDINE_CONFIG__ === "undefined" || !__YALIDINE_CONFIG__) {
         throw new Error(
             "astro-yalidine: Configuration missing. Did you add yalidine to astro.config.mjs ?"
         )
