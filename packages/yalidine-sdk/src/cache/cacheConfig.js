@@ -1,4 +1,4 @@
-import { getConfig } from "../src/utils.js";
+import { getConfig } from "../utils.js";
 import { FileCacheAdapter } from "./fileCacheAdapter.js";
 import { MemoryCacheAdapter } from "./memoryCacheAdapter.js";
 

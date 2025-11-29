@@ -2,5 +2,4 @@
 // Then, use this file to export everything you want your user to access.
 //@ts-nocheck
 
-export { default } from './src/integration.js';
-export * from './src/helpers.js';
+export * from './src/helpers/index.js'

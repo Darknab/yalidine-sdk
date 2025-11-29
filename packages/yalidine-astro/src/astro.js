@@ -1,4 +1,8 @@
 export default function yalidineIntegration(options = {}) {
+    if (!options.apiId || !options.apiToken) {
+        console.warn(`[yalidine-astro] Warning: Missing apiId or apiToken.`);
+    }
+    
     return {
         name: "astro-yalidine",
         hooks: {
