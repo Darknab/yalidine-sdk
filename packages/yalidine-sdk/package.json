@@ -10,11 +10,14 @@
     "exports": {
         ".": {
             "import": "./dist/index.js",
-            "require": "./dist/index.cjs" 
+            "require": "./dist/index.cjs"
         }
     },
     "scripts": {
-        "build": "tsup index.js --format esm,cjs --dts"
+        "build": "tsup index.js --format esm,cjs --dts",
+        "test": "vitest",
+        "test:watch": "vitest --watch",
+        "coverage": "vitest run --coverage"
     },
     "keywords": [
         "sdk",
@@ -23,6 +26,8 @@
         "api"
     ],
     "devDependencies": {
-        "tsup": "^8.5.1"
+        "@vitest/coverage-v8": "^4.0.14",
+        "tsup": "^8.5.1",
+        "vitest": "^4.0.14"
     }
 }
