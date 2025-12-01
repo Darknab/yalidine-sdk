@@ -1,5 +1,5 @@
 import { it, expect } from "vitest";
-import { calculateBillableWeight } from "../src/helpers/calculateBillabeWeight.js";
+import { calculateBillableWeight } from "../../src/helpers/calculateBillabeWeight.js";
 
 it("Returns the highest value real and volumetric weight", () => {
     expect(calculateBillableWeight(10, 40, 20, 8)).toEqual(8);

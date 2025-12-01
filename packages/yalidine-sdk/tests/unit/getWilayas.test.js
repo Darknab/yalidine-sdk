@@ -1,18 +1,18 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { getWilayas } from "../src/helpers/getWilayas.js";
+import { getWilayas } from "../../src/helpers/getWilayas.js";
 
 // Mock utils and cache
-vi.mock("../src/utils.js", () => ({
+vi.mock("../../src/utils.js", () => ({
     ensureServer: vi.fn(),
     getIds: vi.fn(),
     setRequest: vi.fn(),
 }));
-vi.mock("../src/cache/cacheConfig.js", () => ({
+vi.mock("../../src/cache/cacheConfig.js", () => ({
     getCacheConfig: vi.fn(),
 }));
 
-import { ensureServer, getIds, setRequest } from "../src/utils.js";
-import { getCacheConfig } from "../src/cache/cacheConfig.js";
+import { ensureServer, getIds, setRequest } from "../../src/utils.js";
+import { getCacheConfig } from "../../src/cache/cacheConfig.js";
 
 beforeEach(() => {
     vi.clearAllMocks();

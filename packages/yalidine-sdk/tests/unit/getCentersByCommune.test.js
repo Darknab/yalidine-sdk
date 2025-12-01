@@ -1,8 +1,8 @@
 import { it, expect, vi, beforeEach } from "vitest";
-import { getCentersByCommune } from "../src/helpers/getCentersByCommune.js";
+import { getCentersByCommune } from "../../src/helpers/getCentersByCommune.js";
 
 // Mocks
-import * as utils from "../src/utils.js";
+import * as utils from "../../src/utils.js";
 
 beforeEach(() => {
     vi.restoreAllMocks();

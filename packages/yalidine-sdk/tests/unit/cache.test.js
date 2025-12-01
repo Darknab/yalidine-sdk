@@ -2,11 +2,10 @@ import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import fs from "fs";
 import path from "path";
 
-import { CacheAdapter } from "../src/cache/cacheAdapter.js";
-import { MemoryCacheAdapter } from "../src/cache/memoryCacheAdapter.js";
-import { FileCacheAdapter } from "../src/cache/fileCacheAdapter.js";
-import { getCacheConfig } from "../src/cache/cacheConfig.js";
-import * as utils from "../src/utils.js";
+import { CacheAdapter } from "../../src/cache/cacheAdapter.js";
+import { MemoryCacheAdapter } from "../../src/cache/memoryCacheAdapter.js";
+import { FileCacheAdapter } from "../../src/cache/fileCacheAdapter.js";
+import { getCacheConfig } from "../../src/cache/cacheConfig.js";
 
 describe("CacheAdapter (abstract)", () => {
     it("Throws Not implemented for get/set/delete", async () => {

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { ensureServer, getConfig, getIds, calculateOverWeight, validateParcels, setRequest } from "../src/utils.js";
+import { ensureServer, getConfig, getIds, calculateOverWeight, validateParcels, setRequest } from "../../src/utils.js";
 
 describe("ensureServer", () => {
   afterEach(() => {

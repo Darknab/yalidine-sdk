@@ -1,12 +1,12 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { createParcels } from "../src/helpers/createParcels.js";
+import { it, expect, vi, beforeEach } from "vitest";
+import { createParcels } from "../../src/helpers/createParcels.js";
 
-vi.mock("../src/utils.js", () => ({
+vi.mock("../../src/utils.js", () => ({
     ensureServer: vi.fn(),
     validateParcels: vi.fn(),
     setRequest: vi.fn(), 
 }));
-import { ensureServer, validateParcels, setRequest } from "../src/utils.js";
+import { ensureServer, validateParcels, setRequest } from "../../src/utils.js";
 
 beforeEach(() => {
     vi.resetAllMocks();

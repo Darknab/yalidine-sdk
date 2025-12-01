@@ -1,14 +1,14 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { getFees } from "../src/helpers/getFees";
+import { getFees } from "../../src/helpers/getFees.js";
 
-vi.mock("../src/utils.js", () => ({
+vi.mock("../../src/utils.js", () => ({
     calculateOverWeight: vi.fn((base, over, weight) => base + (weight > 5 ? (weight - 5) * over : 0)),
     ensureServer: vi.fn(),
     getConfig: vi.fn(() => ({ startingWilaya: 1 })),
     setRequest: vi.fn(),
 }));
 
-import { calculateOverWeight, ensureServer, getConfig, setRequest } from "../src/utils";
+import { calculateOverWeight, ensureServer, setRequest } from "../../src/utils.js";
 
 beforeEach(() => {
     vi.clearAllMocks();

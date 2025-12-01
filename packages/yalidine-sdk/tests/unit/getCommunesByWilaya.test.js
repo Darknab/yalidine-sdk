@@ -1,18 +1,18 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { getCommunesByWilaya } from "../src/helpers/getCommunesByWilaya";
+import { getCommunesByWilaya } from "../../src/helpers/getCommunesByWilaya.js";
 
-vi.mock("../src/utils.js", () => ({
+vi.mock("../../src/utils.js", () => ({
     ensureServer: vi.fn(),
     setRequest: vi.fn(),
     getIds: vi.fn(),
 }));
 
-vi.mock("../src/cache/cacheConfig.js", () => ({
+vi.mock("../../src/cache/cacheConfig.js", () => ({
     getCacheConfig: vi.fn(),
 }));
 
-import { ensureServer, setRequest, getIds } from "../src/utils.js";
-import { getCacheConfig } from "../src/cache/cacheConfig.js";
+import { ensureServer, setRequest, getIds } from "../../src/utils.js";
+import { getCacheConfig } from "../../src/cache/cacheConfig.js";
 
 let mockCache;
 
