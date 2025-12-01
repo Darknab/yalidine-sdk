@@ -68,37 +68,202 @@ describe("calculateOverWeight", () => {
   });
 });
 
-// TODO: add test to all edge cases
+// Helper to generate a valid parcel
+function baseParcel(overrides = {}) {
+  return {
+    order_id: "ORD01",
+    from_wilaya_name: "A",
+    firstname: "B",
+    familyname: "C",
+    contact_phone: "0123456789",
+    address: "Addr",
+    to_commune_name: "Commune",
+    to_wilaya_name: "Wilaya",
+    product_list: "Prod",
+    price: 100,
+    declared_value: 100,
+    length: 10,
+    width: 10,
+    height: 10,
+    weight: 5,
+    ...overrides
+  };
+}
+
 describe("validateParcels", () => {
+  // -----------------------------
+  // Base cases
+  // -----------------------------
   it("throws when parcels array is empty or undefined", () => {
     expect(() => validateParcels()).toThrow();
     expect(() => validateParcels([])).toThrow();
   });
 
   it("throws when too many parcels (>50)", () => {
-    const parcels = Array.from({ length: 51 }, (_, i) => ({ order_id: `id${i}`, from_wilaya_name: "A", firstname:"B", familyname:"C", contact_phone:"0123456789", address:"Addr", to_commune_name:"Commune", to_wilaya_name:"Wilaya", product_list:"Prod", price:1, declared_value:1, length:1, width:1, height:1, weight:1 }));
-    expect(() => validateParcels(parcels)).toThrow("Too many parcels");
+    const parcels = Array.from({ length: 51 }, (_, i) =>
+      baseParcel({ order_id: `ID${i}` })
+    );
+    expect(() => validateParcels(parcels)).toThrow(
+      "Too many parcels in one request"
+    );
   });
 
   it("returns true for a valid parcel", () => {
-    const validParcel = {
-      order_id: "ORD01",
-      from_wilaya_name: "A",
-      firstname: "B",
-      familyname: "C",
-      contact_phone: "0123456789",
-      address: "Addr",
-      to_commune_name: "Commune",
-      to_wilaya_name: "Wilaya",
-      product_list: "Prod",
-      price: 100,
-      declared_value: 100,
-      length: 10,
-      width: 10,
-      height: 10,
-      weight: 5
-    };
-    expect(validateParcels([validParcel])).toBe(true);
+    expect(validateParcels([baseParcel()])).toBe(true);
+  });
+
+  // -----------------------------
+  // Required string fields
+  // -----------------------------
+  const requiredStrings = [
+    "order_id",
+    "from_wilaya_name",
+    "firstname",
+    "familyname",
+    "contact_phone",
+    "address",
+    "to_commune_name",
+    "to_wilaya_name",
+    "product_list"
+  ];
+
+  requiredStrings.forEach(field => {
+    it(`throws if required string field "${field}" is missing`, () => {
+      const p = baseParcel({ [field]: "" });
+      expect(() => validateParcels([p])).toThrow(`${field} must be a non-empty string`);
+    });
+  });
+
+  // -----------------------------
+  // Numeric fields
+  // -----------------------------
+  const numericFields = [
+    "price",
+    "declared_value",
+    "length",
+    "width",
+    "height",
+    "weight"
+  ];
+
+  numericFields.forEach(field => {
+    it(`throws if numeric field "${field}" is missing`, () => {
+      const p = baseParcel({ [field]: null });
+      expect(() => validateParcels([p])).toThrow(`${field} must be a number >= 0`);
+    });
+
+    it(`throws if numeric field "${field}" is negative`, () => {
+      const p = baseParcel({ [field]: -1 });
+      expect(() => validateParcels([p])).toThrow(`${field} must be a number >= 0`);
+    });
+  });
+
+  // -----------------------------
+  // Price / declared_value ranges
+  // -----------------------------
+  it("throws if price is out of range", () => {
+    const p = baseParcel({ price: 200000 });
+    expect(() => validateParcels([p])).toThrow("price must be between 0 and 150000");
+  });
+
+  it("throws if declared_value is out of range", () => {
+    const p = baseParcel({ declared_value: 200000 });
+    expect(() => validateParcels([p])).toThrow("declared_value must be between 0 and 150000");
+  });
+
+  // -----------------------------
+  // Boolean fields
+  // -----------------------------
+  const booleanFields = [
+    "do_insurance",
+    "freeshipping",
+    "is_stopdesk",
+    "has_exchange",
+    "economic"
+  ];
+
+  booleanFields.forEach(field => {
+    it(`throws if boolean field "${field}" is not boolean`, () => {
+      const p = baseParcel({ [field]: "yes" });
+      expect(() => validateParcels([p])).toThrow(`${field} must be a boolean`);
+    });
+  });
+
+  // -----------------------------
+  // Conditional fields
+  // -----------------------------
+  it("requires stopdesk_id when is_stopdesk is true", () => {
+    const p = baseParcel({
+      is_stopdesk: true,
+      stopdesk_id: undefined
+    });
+
+    expect(() => validateParcels([p])).toThrow("stopdesk_id is required when is_stopdesk is true");
+  });
+
+  it("allows stopdesk_id when provided correctly", () => {
+    const p = baseParcel({
+      is_stopdesk: true,
+      stopdesk_id: "SD123"
+    });
+
+    expect(validateParcels([p])).toBe(true);
+  });
+
+  it("requires product_to_collect when has_exchange is true", () => {
+    const p = baseParcel({
+      has_exchange: true,
+      product_to_collect: undefined
+    });
+
+    expect(() => validateParcels([p])).toThrow(
+      "product_to_collect is required when has_exchange is true"
+    );
+  });
+
+  it("allows product_to_collect when provided", () => {
+    const p = baseParcel({
+      has_exchange: true,
+      product_to_collect: "ItemXYZ"
+    });
+
+    expect(validateParcels([p])).toBe(true);
+  });
+
+  // -----------------------------
+  // Phone validation
+  // -----------------------------
+  it("throws for invalid phone format", () => {
+    const p = baseParcel({ contact_phone: "123456" });
+    expect(() => validateParcels([p])).toThrow("contact_phone");
+  });
+
+  it("throws if one phone in comma list is invalid", () => {
+    const p = baseParcel({ contact_phone: "0123456789, 987654" });
+    expect(() => validateParcels([p])).toThrow("contact_phone");
+  });
+
+  it("allows multiple valid phone numbers", () => {
+    const p = baseParcel({ contact_phone: "0123456789, 0555123456" });
+    expect(validateParcels([p])).toBe(true);
+  });
+
+  // -----------------------------
+  // Multiple errors
+  // -----------------------------
+  it("aggregates multiple errors in the thrown message", () => {
+    const p = baseParcel({
+      order_id: "",
+      price: -10
+    });
+
+    try {
+      validateParcels([p]);
+    } catch (e) {
+      expect(e.message).toMatch(/One error|errors prevent the helper/);
+      expect(e.message).toMatch(/order_id/);
+      expect(e.message).toMatch(/price/);
+    }
   });
 });
 
