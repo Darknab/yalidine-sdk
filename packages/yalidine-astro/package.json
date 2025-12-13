@@ -3,11 +3,15 @@
   "version": "0.1.0",
   "type": "module",
   "exports": {
-    ".": "./index.js"
+    ".": {
+      "import": "./index.js",
+      "types": "./types.d.ts"
+    }
   },
   "files": [
-    "src",
-    "index.js"
+    "src/astro.js",
+    "index.js",
+    "types.d.ts"
   ],
   "keywords": [
     "sdk",
