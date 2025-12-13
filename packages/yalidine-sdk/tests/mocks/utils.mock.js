@@ -18,8 +18,8 @@ export const mockGetConfig = vi.fn(() => ({
     apiId: 'fake_api_id',
     apiToken: 'fake_api_token',
     apiUrl: 'https://api.test-server.net',
-    startingCenter: 'test center',
-    startingWilaya: 'test wilaya',
+    startingCenter: 110,
+    startingWilaya: 16,
     defaultCache: 'file',
     cacheLifeTime: 1
 }));
