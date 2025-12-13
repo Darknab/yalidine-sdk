@@ -9,11 +9,15 @@ export async function getCommunesByWilaya({
 }) {
     ensureServer();
 
+    if (!wilayaId) {
+        throw new Error('A wilaya Id must be entered to retrieve communes.');
+    }
+
     const { cache, CACHE_TTL } = getCacheConfig()
 
     const isPartial = Boolean(params.id);
     const cacheKey = `communes-${wilayaId}`;
-    const cached = await cache.get(cacheKey)
+    const cached = await cache.get(cacheKey);
 
     let communes;
 
