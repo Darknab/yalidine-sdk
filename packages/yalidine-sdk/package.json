@@ -9,9 +9,14 @@
     "type": "module",
     "exports": {
         ".": {
+            "types": "./dist/index.d.ts",
             "import": "./dist/index.js",
             "require": "./dist/index.cjs"
         }
+    },
+    "types": "./dist/index.d.ts",
+    "engines": {
+        "node": ">=18"
     },
     "scripts": {
         "build": "tsup index.js --format esm,cjs --dts",
