@@ -81,6 +81,24 @@ export default defineConfig({
 
 If `apiId` or `apiToken` are missing, a warning is logged at build time.
 
+### Environment variables
+
+The following environment variables are required to authenticate with the Yalidine API:
+
+```env
+YALIDINE_API_ID=your_api_id
+YALIDINE_API_TOKEN=your_api_token
+```
+These variables must be available in your environment:
+
+- In development: defined in a .env file
+
+- In production: configured in your hosting provider or deployment environment
+
+They are only used server-side and are never exposed to client-side code.
+
+> Note: Changes to environment variables require restarting the Astro dev server.
+
 ---
 
 ## Usage
