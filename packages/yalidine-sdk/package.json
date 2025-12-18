@@ -1,6 +1,6 @@
 {
     "name": "yalidine-sdk",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "main": "dist/index.cjs",
     "module": "dist/index.js",
     "files": [
@@ -34,5 +34,6 @@
         "@vitest/coverage-v8": "^4.0.14",
         "tsup": "^8.5.1",
         "vitest": "^4.0.14"
-    }
+    },
+    "license": "MIT"
 }
