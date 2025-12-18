@@ -35,5 +35,14 @@
         "tsup": "^8.5.1",
         "vitest": "^4.0.14"
     },
-    "license": "MIT"
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Darknab/yalidine-sdk.git",
+        "directory": "packages/yalidine-sdk"
+    },
+    "homepage": "https://github.com/Darknab/yalidine-sdk",
+    "bugs": {
+        "url": "https://github.com/Darknab/yalidine-sdk/issues"
+    }
 }

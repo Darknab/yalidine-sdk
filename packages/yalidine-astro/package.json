@@ -30,5 +30,14 @@
   "peerDependencies": {
     "astro": "^4.0.0 || ^5.0.0"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Darknab/yalidine-sdk.git",
+    "directory": "packages/yalidine-astro"
+  },
+  "homepage": "https://github.com/Darknab/yalidine-sdk",
+  "bugs": {
+    "url": "https://github.com/Darknab/yalidine-sdk/issues"
+  }
 }
