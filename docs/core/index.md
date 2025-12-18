@@ -27,7 +27,7 @@ The core SDK includes all domain-level functionality, independent of any framewo
 
 We provide framework-specific integration packages that make it easy to configure and use the SDK in your projects. Each integration handles configuration, environment setup, and runtime compatibility:
 
-* [Astro Integration](./integrations/astro.md)
+* [Astro Integration](../integrations/astro.md)
 * *React Integration (coming soon)*
 * *Vue Integration (coming soon)*
 * *Vite Integration (coming soon)*
