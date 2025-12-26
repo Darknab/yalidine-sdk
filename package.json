@@ -4,5 +4,11 @@
   "workspaces": [
     "packages/*"
   ],
+  "scripts": {
+    "build": "npm run build -w yalidine-sdk",
+    "dev": "npm run watch -w yalidine-sdk",
+    "test": "npm run test -w yalidine-sdk",
+    "lint": "echo \"no lint yet\""
+  },
   "license": "MIT"
 }
