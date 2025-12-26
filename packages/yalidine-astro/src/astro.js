@@ -1,8 +1,4 @@
-export default function yalidineIntegration(options = {}) {
-    if (!options.apiId || !options.apiToken) {
-        console.warn(`[yalidine-astro] Warning: Missing apiId or apiToken.`);
-    }
-    
+export default function yalidineIntegration(options = {}) {   
     return {
         name: "astro-yalidine",
         hooks: {
@@ -11,8 +7,6 @@ export default function yalidineIntegration(options = {}) {
                     vite: {
                         define: {
                             __YALIDINE_CONFIG__: JSON.stringify({
-                                apiId: options.apiId ?? null,
-                                apiToken: options.apiToken ?? null,
                                 apiUrl: options.apiUrl ?? "https://api.yalidine.com/v1",
                                 startingCenter: options.startingCenter ?? null,
                                 startingWilaya: options.startingWilaya ?? null,
