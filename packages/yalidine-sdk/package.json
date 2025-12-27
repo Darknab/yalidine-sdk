@@ -1,6 +1,6 @@
 {
     "name": "yalidine-sdk",
-    "version": "0.1.1",
+    "version": "0.2.0",
     "main": "dist/index.cjs",
     "module": "dist/index.js",
     "files": [
@@ -20,15 +20,20 @@
     },
     "scripts": {
         "build": "tsup index.js --format esm,cjs --dts",
+        "watch": "tsup index.js --format esm,cjs --dts --watch",
+        "prepublishOnly": "npm run build",
+        "dev": "tsup --watch",
         "test": "vitest",
         "test:watch": "vitest --watch",
         "coverage": "vitest run --coverage"
     },
+    "description": "JavaScript SDK for the Yalidine shipping API, designed for e-commerce frontends to fetch locations, calculate delivery fees, and create shipments.",
     "keywords": [
         "sdk",
         "yalidine",
         "shipping",
-        "api"
+        "api",
+        "Algeria"
     ],
     "devDependencies": {
         "@vitest/coverage-v8": "^4.0.14",
