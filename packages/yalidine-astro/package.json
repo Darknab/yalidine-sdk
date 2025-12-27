@@ -1,6 +1,6 @@
 {
   "name": "yalidine-astro",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "type": "module",
   "exports": {
     ".": {
@@ -13,16 +13,22 @@
     "index.js",
     "types.d.ts"
   ],
+  "description": "Astro integration for the Yalidine shipping API, providing a frontend-friendly SDK for e-commerce checkout and delivery creation.",
   "keywords": [
+    "astro-integration",
+    "withastro",
+    "utility",
+    "utils",
     "sdk",
     "yalidine",
     "shipping",
-    "api"
+    "api",
+    "algeria"
   ],
   "types": "types.d.ts",
   "scripts": {},
   "dependencies": {
-    "yalidine-sdk": "0.1.0"
+    "yalidine-sdk": "workspace:^"
   },
   "devDependencies": {
     "astro": "^5.13.9"
