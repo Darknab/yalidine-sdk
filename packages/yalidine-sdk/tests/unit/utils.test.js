@@ -1,6 +1,9 @@
 import { describe, it, expect, vi } from "vitest";
 import { ensureServer, getConfig, getIds, calculateOverWeight, validateParcels, setRequest } from "../../src/utils.js";
 
+vi.stubEnv("YALIDINE_API_ID", "123");
+vi.stubEnv("YALIDINE_API_TOKEN", "abc");
+
 describe("ensureServer", () => {
   afterEach(() => {
     // cleanup: remove global.window if it was set
@@ -44,7 +47,7 @@ describe("getConfig", () => {
   });
 
   it("returns the config if defined", () => {
-    global.__YALIDINE_CONFIG__ = { apiId: "123", apiToken: "abc" };
+    global.__YALIDINE_CONFIG__ = {};
     expect(getConfig()).toEqual({ apiId: "123", apiToken: "abc" });
   });
 });

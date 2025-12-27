@@ -8,13 +8,30 @@ export function ensureServer() {
     }
 }
 
+function getEnv(name) {
+    return import.meta.env?.[name] ?? process.env[name]
+}
+
 export function getConfig() {
     if (typeof __YALIDINE_CONFIG__ === "undefined" || !__YALIDINE_CONFIG__) {
         throw new Error(
             "astro-yalidine: Configuration missing. Did you add yalidine to astro.config.mjs ?"
         )
     }
-    return __YALIDINE_CONFIG__;
+
+    const apiId = getEnv("YALIDINE_API_ID");
+    const apiToken = getEnv("YALIDINE_API_TOKEN");
+
+    if (!apiId || !apiToken) {
+        throw new Error(
+        "astro-yalidine: Missing YALIDINE_API_ID or YALIDINE_API_TOKEN environment variables."
+        );
+    }
+    return {
+        apiId,
+        apiToken,
+        ...__YALIDINE_CONFIG__
+    };
 }
 
 export async function setRequest({endpoint, method = 'GET', options = {}, params = {}}) {

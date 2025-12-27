@@ -15,8 +15,6 @@ export function mockApiError(error) {
 }
 
 export const mockGetConfig = vi.fn(() => ({
-    apiId: 'fake_api_id',
-    apiToken: 'fake_api_token',
     apiUrl: 'https://api.test-server.net',
     startingCenter: 110,
     startingWilaya: 16,

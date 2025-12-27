@@ -7,6 +7,9 @@ import { MemoryCacheAdapter } from "../../src/cache/memoryCacheAdapter.js";
 import { FileCacheAdapter } from "../../src/cache/fileCacheAdapter.js";
 import { getCacheConfig } from "../../src/cache/cacheConfig.js";
 
+vi.stubEnv("YALIDINE_API_ID", "123");
+vi.stubEnv("YALIDINE_API_TOKEN", "abc");
+
 describe("CacheAdapter (abstract)", () => {
     it("Throws Not implemented for get/set/delete", async () => {
         const adapter = new CacheAdapter();
