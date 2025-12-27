@@ -28,7 +28,7 @@
   "types": "types.d.ts",
   "scripts": {},
   "dependencies": {
-    "yalidine-sdk": "workspace:^"
+    "yalidine-sdk": "^0.2.0"
   },
   "devDependencies": {
     "astro": "^5.13.9"
