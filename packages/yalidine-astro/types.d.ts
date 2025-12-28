@@ -1,7 +1,5 @@
 declare module "yalidine-astro" {
   interface YalidineOptions {
-    apiId?: string;
-    apiToken?: string;
     apiUrl?: string;
     startingCenter?: string | number;
     startingWilaya?: string | number;
