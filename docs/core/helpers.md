@@ -62,6 +62,8 @@ async function getWilayas({
 **Example:**
 
 ```js
+import { getWilayas } from 'yalidine-sdk';
+
 const wilayas = await getWilayas({ deliverableOnly: false, params: { id: [1,2] } });
 ```
 
@@ -120,6 +122,8 @@ async function getCommunesByWilaya({
 **Example:**
 
 ```js
+import { getCommunesByWilaya } from 'yalidine-sdk';
+
 const communes = await getCommunesByWilaya({ wilayaId: 16, hasStopDesk: true });
 ```
 
@@ -168,6 +172,8 @@ async function getCentersByWilaya({ wilayaId, params = {} })
 **Example:**
 
 ```js
+import { getCentersByWilaya } from 'yalidine-sdk';
+
 const centers = await getCentersByWilaya({ wilayaId: 16 });
 ```
 
@@ -214,6 +220,8 @@ async function getCentersByCommune({ communeId, params = {} })
 **Example:**
 
 ```js
+import { getCentersByCommune } from 'yalidine-sdk';
+
 const centers = await getCentersByCommune({ communeId: 1601 });
 ```
 
@@ -278,6 +286,8 @@ async function getFees({
 **Example:**
 
 ```js
+import { getFees } from 'yalidine-sdk';
+
 const fees = await getFees({ toWilayaId: 16, toCommuneId: 1601, billableWeight: 7 });
 ```
 
@@ -314,6 +324,8 @@ function calculateBillableWeight(height, width, length, weight)
 **Example:**
 
 ```js
+import { calculateBillableWeight } from 'yalidine-sdk';
+
 const billable = calculateBillableWeight(50, 40, 30, 4); // Returns 4.8 if volumetric > actual
 ```
 
@@ -377,6 +389,8 @@ Each parcel must include required fields with correct types (string, number, boo
 **Example:**
 
 ```js
+import { createParcels } from 'yalidine-sdk';
+
 const parcels = [
   {
     order_id: "ORD-2025-001",
@@ -431,6 +445,8 @@ const result = await createParcels(parcels);
 ```
 
 ## Patterns Summary
+
+- Import Source: All helpers are exported by yalidine-sdk and must be imported directly from it. Framework integrations do not re-export SDK helpers.
 
 - Caching: Most helpers use cache to improve performance. Partial fetches (`params.id`) are supported.
 

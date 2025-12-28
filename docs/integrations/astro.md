@@ -1,5 +1,18 @@
 # Yalidine Astro Integration
 
+## Table of contents
+1. [Overview](#overview)
+2. [Requirements](#requirements)
+3. [Installation](#installation)
+4. [Configuration](#configuration)
+5. [Usage](#usage)
+6. [Execution-model](#server-only-execution-model)
+7. [Import-source](#import-source)
+8. [Error-handling](#error-handling)
+9. [caching](#caching)
+10. [notes](#notes-and-caveats)
+11. [related-documentation](#related-documentation)
+
 ## Overview
 
 `yalidine-astro` is the official Astro integration for the Yalidine SDK. It provides a clean and framework-native way to configure `yalidine-sdk` in Astro projects by injecting the required configuration at build time.
@@ -55,13 +68,9 @@ import yalidineIntegration from "yalidine-astro";
 export default defineConfig({
   integrations: [
     yalidineIntegration({
-      apiId: process.env.YALIDINE_API_ID,
-      apiToken: process.env.YALIDINE_API_TOKEN,
-      apiUrl: "https://api.yalidine.com/v1", // optional
-      startingCenter: null,                  // optional
-      startingWilaya: null,                  // optional
-      cacheDefault: "memory",               // optional
-      cacheLifeTime: 1                       // optional (in days)
+      apiUrl: "https://api.yalidine.com/v1",
+      cacheDefault: "memory",
+      cacheLifeTime: 1  //in days
     })
   ]
 });
@@ -69,17 +78,13 @@ export default defineConfig({
 
 ### Configuration options
 
-| Option           | Required | Description                                              |
-| ---------------- | -------- | -------------------------------------------------------- |
-| `apiId`          | yes      | Your Yalidine API ID                                     |
-| `apiToken`       | yes      | Your Yalidine API token                                  |
-| `apiUrl`         | no       | Base API URL (defaults to `https://api.yalidine.com/v1`) |
-| `startingCenter` | no       | Default starting center ID                               |
-| `startingWilaya` | no       | Default starting wilaya ID                               |
-| `cacheDefault`   | no       | Cache strategy (`memory` by default)                     |
-| `cacheLifeTime`  | no       | Cache lifetime (default: `1`)                            |
-
-If `apiId` or `apiToken` are missing, a warning is logged at build time.
+| Option           | Description                                              |
+| ---------------- | -------------------------------------------------------- |
+| `apiUrl`         | Base API URL (defaults to `https://api.yalidine.com/v1`) |
+| `startingCenter` | Default starting center ID                               |
+| `startingWilaya` | Default starting wilaya ID                               |
+| `cacheDefault`   | Cache strategy (`memory` by default)                     |
+| `cacheLifeTime`  | Cache lifetime (default: `1`)                            |
 
 ### Environment variables
 
@@ -96,6 +101,10 @@ These variables must be available in your environment:
 - In production: configured in your hosting provider or deployment environment
 
 They are only used server-side and are never exposed to client-side code.
+
+> **Why credentials are not part of the config**
+> 
+> API credentials are intentionally read from environment variables instead of being passed to the integration. This avoids accidental exposure, keeps astro.config.mjs free of secrets, and aligns with Astro and Node.js best practices.
 
 > Note: Changes to environment variables require restarting the Astro dev server.
 
@@ -151,6 +160,14 @@ This means:
 * ❌ Browser-only scripts
 
 Pure helpers that do not communicate with the API may be used anywhere, but API helpers must never be bundled into client-side code.
+
+---
+
+## Import source
+
+All low-level API helpers are provided by yalidine-sdk and must be imported directly from it.
+
+The Astro integration is responsible for framework-level setup and configuration only, and does not re-export SDK helpers.
 
 ---
 
