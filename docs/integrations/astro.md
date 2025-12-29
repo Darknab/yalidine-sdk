@@ -72,7 +72,12 @@ export default defineConfig({
       cacheDefault: "memory",
       cacheLifeTime: 1  //in days
     })
-  ]
+  ],
+  vite: {
+    ssr: {
+      noExternal: ['yalidine-sdk']
+    }
+  }
 });
 ```
 
@@ -102,11 +107,15 @@ These variables must be available in your environment:
 
 They are only used server-side and are never exposed to client-side code.
 
+### Notes
+
 > **Why credentials are not part of the config**
 > 
 > API credentials are intentionally read from environment variables instead of being passed to the integration. This avoids accidental exposure, keeps astro.config.mjs free of secrets, and aligns with Astro and Node.js best practices.
 
-> Note: Changes to environment variables require restarting the Astro dev server.
+> Because yalidine-sdk integrates deeply with Astro’s build pipeline, it must be bundled during SSR. This is a standard requirement for Astro integrations that inject compile-time configuration.
+
+> Changes to environment variables require restarting the Astro dev server.
 
 ---
 
