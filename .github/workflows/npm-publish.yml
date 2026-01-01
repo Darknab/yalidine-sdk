@@ -63,4 +63,4 @@ jobs:
           fi
 
       - name: Publish package
-        run: npm publish -w ${{ steps.meta.outputs.package }} --access public
+        run: npm publish -w ${{ steps.meta.outputs.package }} --provenance --access public
