@@ -1,0 +1,60 @@
+name: Publish workspace package
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org/
+
+      - name: Extract package name and version from tag
+        id: meta
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          PACKAGE_NAME="${TAG%@*}"
+          VERSION="${TAG#*@}"
+
+          echo "package=$PACKAGE_NAME" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Validate package name
+        run: |
+          case "${{ steps.meta.outputs.package }}" in
+            yalidine-sdk|yalidine-astro)
+              echo "Valid package"
+              ;;
+            *)
+              echo "Invalid package name in tag"
+              exit 1
+              ;;
+          esac
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests for target package
+        run: npm test -w ${{ steps.meta.outputs.package }}
+
+      - name: Ensure package version matches tag
+        run: |
+          PKG_VERSION=$(node -p "require('./packages/${{ steps.meta.outputs.package }}/package.json').version")
+          if [ "$PKG_VERSION" != "${{ steps.meta.outputs.version }}" ]; then
+            echo "Version mismatch: package.json=$PKG_VERSION, tag=${{ steps.meta.outputs.version }}"
+            exit 1
+          fi
+
+      - name: Publish package
+        run: npm publish -w ${{ steps.meta.outputs.package }} --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
