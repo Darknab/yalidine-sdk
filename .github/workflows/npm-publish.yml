@@ -4,6 +4,10 @@ on:
   release:
     types: [created]
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -42,6 +46,10 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+      
+      - name: Build package (SDK only)
+        if: ${{ steps.meta.outputs.package == 'yalidine-sdk' }}
+        run: npm run build
 
       - name: Run tests for target package
         run: npm test -w ${{ steps.meta.outputs.package }}
@@ -56,5 +64,3 @@ jobs:
 
       - name: Publish package
         run: npm publish -w ${{ steps.meta.outputs.package }} --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
