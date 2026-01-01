@@ -26,7 +26,9 @@
     "algeria"
   ],
   "types": "types.d.ts",
-  "scripts": {},
+  "scripts": {
+    "test": "echo \"No tests yet\""
+  },
   "dependencies": {
     "yalidine-sdk": "^0.2.0"
   },
