@@ -47,5 +47,10 @@
   "homepage": "https://github.com/Darknab/yalidine-sdk",
   "bugs": {
     "url": "https://github.com/Darknab/yalidine-sdk/issues"
+  },
+  "overrides": {
+    "devalue": "5.6.2",
+    "h3": "1.15.5"
+
   }
 }
