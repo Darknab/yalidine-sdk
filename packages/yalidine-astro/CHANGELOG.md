@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to Semantic Versioning.
 
+## [0.2.2] – 2026-02-21
+### Security
+- Patched vulnerability in `devalue`.
+
 ## [0.2.1] – 2026-01-16
 ### Security
 - Patched transitive vulnerabilities in `devalue` and `h3`.
