@@ -10,5 +10,8 @@
     "test": "npm run test -w yalidine-sdk",
     "lint": "echo \"no lint yet\""
   },
+  "overrides": {
+    "rollup": "4.59.0"
+  },
   "license": "MIT"
 }
