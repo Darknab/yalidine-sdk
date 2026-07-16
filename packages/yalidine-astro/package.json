@@ -33,7 +33,7 @@
     "yalidine-sdk": "^0.2.0"
   },
   "devDependencies": {
-    "astro": "^7.0.6"
+    "astro": "^7.0.9"
   },
   "peerDependencies": {
     "astro": "^4.0.0 || ^5.0.0"
