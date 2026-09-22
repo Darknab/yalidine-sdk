@@ -36,7 +36,7 @@
         "Algeria"
     ],
     "devDependencies": {
-        "@vitest/coverage-v8": "^5.0.0",
+        "@vitest/coverage-v8": "^5.0.1",
         "tsup": "^8.5.1",
         "vitest": "^5.0.0"
     },
