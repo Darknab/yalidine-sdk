@@ -1,11 +1,9 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import "../mocks/utils.mock.js";
 import "../mocks/cache.mock.js";
 
-import { 
-  mockSetRequest, 
-  mockApiSuccess 
-} from "../mocks/utils.mock.js";
+import { mockSetRequest, mockGetConfig } from "../mocks/utils.mock.js";
+import { mockGetCacheConfig } from "../mocks/cache.mock.js";
 
 import { 
   mockCacheGet, 
@@ -13,6 +11,20 @@ import {
 } from "../mocks/cache.mock.js";
 
 import { getCommunesByWilaya } from "../../src/helpers/getCommunesByWilaya.js";
+
+vi.mock("../../src/cache/cacheConfig.js", () => ({
+  getCacheConfig: mockGetCacheConfig
+}));
+
+vi.mock('../../src/utils.js', async () => {
+    const actual = await vi.importActual('../../src/utils.js');
+    return {
+        ...actual,
+        setRequest: mockSetRequest,
+        getConfig: mockGetConfig,
+    }
+
+});
 
 const wId = 16
 

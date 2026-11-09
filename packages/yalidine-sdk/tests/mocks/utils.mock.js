@@ -22,15 +22,3 @@ export const mockGetConfig = vi.fn(() => ({
     cacheLifeTime: 1
 }));
 
-export async function registerUtilsMock() {
-
-    vi.mock('../../src/utils.js', async () => {
-        const actual = await vi.importActual('../../src/utils.js');
-        return {
-            ...actual,
-            setRequest: mockSetRequest,
-            getConfig: mockGetConfig,
-        }
-
-    });
-}

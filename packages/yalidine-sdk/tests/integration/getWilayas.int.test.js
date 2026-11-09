@@ -1,17 +1,33 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import "../mocks/utils.mock.js";
 import "../mocks/cache.mock.js";
 
 import { 
-  mockSetRequest 
+  mockSetRequest,
+  mockGetConfig
 } from "../mocks/utils.mock.js";
 
 import { 
   mockCacheGet, 
-  mockCacheSet 
+  mockCacheSet,
+  mockGetCacheConfig 
 } from "../mocks/cache.mock.js";
 
 import { getWilayas } from "../../src/helpers/getWilayas.js";
+
+vi.mock("../../src/cache/cacheConfig.js", () => ({
+  getCacheConfig: mockGetCacheConfig
+}));
+
+vi.mock('../../src/utils.js', async () => {
+    const actual = await vi.importActual('../../src/utils.js');
+    return {
+        ...actual,
+        setRequest: mockSetRequest,
+        getConfig: mockGetConfig,
+    }
+
+});
 
 const apiWilayas = [
   { id: 1, name: "Alger", zone: "C", is_deliverable: 1 },

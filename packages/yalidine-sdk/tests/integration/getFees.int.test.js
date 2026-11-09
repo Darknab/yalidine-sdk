@@ -1,8 +1,18 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import "../mocks/utils.mock.js";
 
 import { mockSetRequest, mockGetConfig } from "../mocks/utils.mock.js";
 import { getFees } from "../../src/helpers/getFees.js";
+
+vi.mock('../../src/utils.js', async () => {
+    const actual = await vi.importActual('../../src/utils.js');
+    return {
+        ...actual,
+        setRequest: mockSetRequest,
+        getConfig: mockGetConfig,
+    }
+
+});
 
 const apiFeesResponse = {
   per_commune: {

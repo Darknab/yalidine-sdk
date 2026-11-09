@@ -1,18 +1,34 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import "../mocks/utils.mock.js";
 import "../mocks/cache.mock.js";
 
 import { 
-  mockSetRequest, 
+  mockSetRequest,
+  mockGetConfig,
   mockApiSuccess 
 } from "../mocks/utils.mock.js";
 
 import { 
   mockCacheGet, 
-  mockCacheSet 
+  mockCacheSet,
+  mockGetCacheConfig 
 } from "../mocks/cache.mock.js";
 
 import { getCentersByWilaya } from "../../src/helpers/getCentersByWilaya.js";
+
+vi.mock('../../src/utils.js', async () => {
+    const actual = await vi.importActual('../../src/utils.js');
+    return {
+        ...actual,
+        setRequest: mockSetRequest,
+        getConfig: mockGetConfig,
+    }
+
+});
+
+vi.mock("../../src/cache/cacheConfig.js", () => ({
+  getCacheConfig: mockGetCacheConfig
+}));
 
 describe("getCentersByWilaya (integration)", () => {
   beforeEach(() => {

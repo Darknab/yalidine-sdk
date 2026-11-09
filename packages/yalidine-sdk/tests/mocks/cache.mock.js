@@ -10,9 +10,3 @@ export const mockGetCacheConfig = vi.fn(() => ({
   },
   CACHE_TTL: 60
 }));
-
-export function registerCacheMock() {
-  vi.mock("../../src/cache/cacheConfig.js", () => ({
-    getCacheConfig: mockGetCacheConfig
-  }));
-}

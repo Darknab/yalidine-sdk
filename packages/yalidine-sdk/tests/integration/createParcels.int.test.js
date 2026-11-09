@@ -1,14 +1,18 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
+import { mockSetRequest, mockApiSuccess, mockApiError, mockGetConfig } from "../mocks/utils.mock.js";
 
-// Import the API mock helpers
-import { registerUtilsMock } from "../mocks/utils.mock.js";
+vi.mock('../../src/utils.js', async () => {
+  const actual = await vi.importActual('../../src/utils.js');
+  return {
+      ...actual,
+      setRequest: mockSetRequest,
+      getConfig: mockGetConfig,
+  }
 
-beforeAll(async () => {
-  await registerUtilsMock()
-})
+});
 
 import { createParcels } from "../../src/helpers/createParcels.js";
-import { mockSetRequest, mockApiSuccess, mockApiError, mockGetConfig } from "../mocks/utils.mock.js";
+
 
 // --- Sample parcels for tests ---
 
