@@ -16,7 +16,7 @@
   },
   "license": "MIT",
   "allowScripts": {
-    "esbuild@0.28.1": true,
+    "esbuild@0.28.2": true,
     "esbuild@0.27.2": true
   }
 }
